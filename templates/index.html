@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Modeling - Product Reviews</title>
+    <style>
+        /* Center the content */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #4a4949; /* Dark grey background color */
+            color: black; /* Text color changed to black */
+        }
+
+        /* Boxed format */
+        .boxed {
+            padding: 20px;
+            border: 1px solid #3d3535;
+            border-radius: 10px;
+            width: 110%; /* Increased width */
+            max-width: 800px;
+            text-align: center;
+            background-color: #edd1d1; /* Light grey background color */
+        }
+
+        /* Shadow for buttons */
+        .button-shadow {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for the "Submit" button */
+        #submit-button {
+            background-color: #87CEEB; /* Light blue color */
+            color: rgb(27, 2, 2);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Style for the progress message */
+        #progress {
+            display: none;
+            font-size: 22px; /* Increased font size */
+            background-color: #535091; /* Light green color */
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for product name */
+        #product-name {
+            font-size: 18px; /* Decreased font size */
+        }
+
+        /* Style for topic weights */
+        .topic-weights {
+            font-size: 18px; /* Decreased font size */
+        }
+
+        /* Decrease font size of title */
+        h1 {
+            font-size: 24px; /* Decreased font size */
+        }
+
+        /* Decrease font size of Number of reviews scrapped */
+        h3 {
+            font-size: 18px; /* Decreased font size */
+        }
+
+        /* Decrease font size of topics */
+        ul {
+            font-size: 16px; /* Decreased font size */
+            list-style-type: none; /* Remove bullet points */
+            padding-left: 0; /* Remove left padding */
+        }
+
+        /* Increase font size of topic labels */
+        li button {
+            font-size: 18px; /* Increased font size for topic labels */
+        }
+    </style>
+</head>
+<body>
+    <div class="boxed">
+        <h1>Topic Modeling - Product Reviews</h1>
+        <form method="POST">
+            <label for="product_name" style="font-size: 18px;">Select a Product:</label>
+            <select name="product_name" id="product_name" style="font-size: 18px;">
+                <option value="BIGMUSCLES NUTRITION Premium Gold Whey">BIGMUSCLES NUTRITION Premium Gold Whey</option>
+                <option value="Endura Mass">Endura Mass</option>
+                <option value="MUSCLEBLAZE Creatine Monohydrate">MUSCLEBLAZE Creatine Monohydrate</option>
+                <option value="MUSCLEBLAZE Raw Whey Protein Concentrate">MUSCLEBLAZE Raw Whey Protein Concentrate</option>
+                <option value="HEALTHKART HK Vitals Multivitamin">HEALTHKART HK Vitals Multivitamin</option>
+            </select>
+            <button type="submit" class="button-shadow" id="submit-button" onclick="showProgress()">Submit</button>
+        </form>
+        <div id="progress">Extracting reviews.., Preprocessing text.., Performing LDA.., Assigning labels.....</div>
+        {% if product_name %}
+        <h2 id="product-name">Product Name: {{ product_name }}</h2>
+        <h3>Number of Reviews Extracted: {{ num_reviews }}</h3>
+        <h3>Topic Labels</h3>
+        <ul>
+            {% for label in topic_labels %}
+            <li><button class="button-shadow">{{ label }}</button></li>
+            {% endfor %}
+        </ul>
+        <h3>Topics generated using Latent Dirichlet Allocation </h3>
+        <ul>
+            {% for topic_id, topic in topics %}
+            <li>Topic {{ topic_id }}: {{ topic }}</li>
+            {% endfor %}
+        </ul>
+        <h3 class="topic-weights">Topic Weights:</h3>
+        <ul>
+            {% for topic_id, weight in topic_weights.items() %}
+            <li class="topic-weights">Topic {{ topic_id }} Weight: {{ weight }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <script>
+        function showProgress() {
+            document.getElementById("progress").style.display = "block";
+        }
+    </script>
+</body>
+</html>

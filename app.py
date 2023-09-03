@@ -39,7 +39,22 @@ progress_messages = [
 stop_words = set(stopwords.words('english'))
 
 
+
 def preprocess_text(text):
+    """
+    Preprocesses text data by:
+    - Lowercasing
+    - Removing punctuation
+    - Removing stopwords
+    - Tokenization
+    - Lemmatization
+
+    Args:
+        text (str): Input text to be preprocessed.
+
+    Returns:
+        str: Cleaned and preprocessed text.
+    """
     # Lowercasing and splitting into words
     words = text.lower().split()
 
@@ -60,9 +75,20 @@ def preprocess_text(text):
     cleaned_text = ' '.join(tokens)
     return cleaned_text
 
-
 # Define your LDA model training function with exception handling
 def train_lda_model(product_name):
+    """
+    Trains an LDA (Latent Dirichlet Allocation) model on product reviews to identify topics.
+
+    Args:
+        product_name (str): Name of the selected product.
+
+    Returns:
+        int: Total number of reviews.
+        list: LDA model topics.
+        dict: Topic weights.
+        list: Topic labels.
+    """
     try:
         # Extract the URL based on the selected product name
         product_url = product_urls.get(product_name)
@@ -208,6 +234,13 @@ def train_lda_model(product_name):
 # Define a route for the homepage with the form
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    """
+    Defines the homepage route for the Flask application.
+    Handles user input for product selection, topic modeling, and result presentation.
+
+    Returns:
+        HTML template: Renders the HTML template with results.
+    """
     if request.method == 'POST':
         product_name = request.form['product_name']
         try:
